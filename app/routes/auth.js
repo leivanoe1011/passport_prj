@@ -15,9 +15,31 @@ module.exports = function(app, passport) {
 
     ));
 
-    // make sure the page can only be accessed when a user is logged into the session
-    app.get('/dashboard',authController.dashboard);
 
+    app.post('/signin', passport.authenticate('local-signin', {
+            successRedirect: '/dashboard',
+    
+            failureRedirect: '/signin'
+        }
+    
+    ));
+
+    
+    // make sure the page can only be accessed when a user is logged into the session
+    app.get('/dashboard', isLoggedIn, authController.dashboard);
+
+    app.get('/logout',authController.logout);
+
+    
+    function isLoggedIn(req, res, next) {
+ 
+        if (req.isAuthenticated())
+         
+            return next();
+             
+        res.redirect('/signin');
+     
+    }
   
 }
 
