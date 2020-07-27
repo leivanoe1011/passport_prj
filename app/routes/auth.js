@@ -15,6 +15,9 @@ module.exports = function(app, passport) {
 
     ));
 
+    // make sure the page can only be accessed when a user is logged into the session
+    app.get('/dashboard',authController.dashboard);
+
   
 }
 
